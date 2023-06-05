@@ -1,0 +1,34 @@
+[Version]
+Signature = "$WINDOWS NT$"
+
+[DefaultInstall.NT]
+CopyFiles = ClassFilterInstall.CopyFiles
+Addreg = Classfilter.AddReg
+
+[ClassFilterInstall.CopyFiles]
+ArScFilter.sys
+
+[Classfilter.AddReg]
+HKLM, System\CurrentControlSet\Control\Class\{50DD5230-BA8A-11D1-BF5D-0000F805F530}, UpperFilters, 0x00010008, ArScFilter
+
+[DefaultInstall.NT.Services]
+AddService = ArScFilter,,arx_ClassFilterUpperService
+
+[arx_ClassFilterUpperService]
+DisplayName = arx_ClassUpperFilterService
+ServiceType = 1
+StartType = 3
+ErrorControl = 1
+ServiceBinary = %12%\ArScFilter.sys
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[SourceDisksNames]
+1=%Disk1%,,
+
+[SourceDisksFiles]
+ArScFilter.sys = 1
+
+[Strings]
+Disk1 = "The First Disk"

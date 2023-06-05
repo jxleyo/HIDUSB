@@ -1,0 +1,61 @@
+Apple multi-touch protocol description on HID layer
+I'd like to realise low level of multi-touch protocol used in apple device (as I now it called multi-touch (MT) multi-touch-protocol ) over HID on STM32 microcontroller. I sniff all USB descriptor of Magic Trackpad 2 using USBLyser. It include "Device Management" intarface,"Trackpad" interface, "Actuator" interface, "Accelerometer" interface. I show report descriptor of "Trackpad" interface
+
+
+
+Item Tag (Value) Raw Data Usage Page (Generic Desktop) 05 01
+Usage (Mouse) 09 02
+Collection (Application) A1 01
+Usage (Pointer) 09 01
+Collection (Physical) A1 00
+Usage Page (Button) 05 09
+Usage Minimum (Button 1) 19 01
+Usage Maximum (Button 3) 29 03
+Logical Minimum (0) 15 00
+Logical Maximum (1) 25 01
+Report ID (2) 85 02
+Report Count (3) 95 03
+Report Size (1) 75 01
+Input (Data,Var,Abs,NWrp,Lin,Pref,NNul,Bit) 81 02
+Report Count (1) 95 01
+Report Size (5) 75 05
+Input (Cnst,Ary,Abs) 81 01
+Usage Page (Generic Desktop) 05 01
+Usage (X) 09 30
+Usage (Y) 09 31
+Logical Minimum (-127) 15 81
+Logical Maximum (127) 25 7F
+Report Size (8) 75 08
+Report Count (2) 95 02
+Input (Data,Var,Rel,NWrp,Lin,Pref,NNul,Bit) 81 06
+Report Count (4) 95 04
+Report Size (8) 75 08
+Input (Cnst,Ary,Abs) 81 01
+End Collection C0
+End Collection C0
+Usage Page (Digitizer) 05 0D
+Usage (Touch Pad) 09 05
+Collection (Application) A1 01
+Usage Page (Vendor-Defined 1) 06 00 FF
+Usage (Vendor-Defined 12) 09 0C
+Logical Minimum (0) 15 00
+Logical Maximum (255) 26 FF 00
+Report Size (8) 75 08
+Report Count (16) 95 10
+Report ID (63) 85 3F
+Input (Data,Var,Abs,NWrp,Lin,NPrf,NNul,Bit) 81 22
+End Collection C0
+Usage Page (Vendor-Defined 1) 06 00 FF
+Usage (Vendor-Defined 12) 09 0C
+Collection (Application) A1 01
+Usage Page (Vendor-Defined 1) 06 00 FF
+Usage (Vendor-Defined 12) 09 0C
+Logical Minimum (0) 15 00
+Logical Maximum (255) 26 FF 00
+Report ID (68) 85 44
+Report Size (8) 75 08
+Report Count (1387) 96 6B 05
+Input (Data,Ary,Abs) 81 00
+End Collection C0
+
+As i understand, MT-A (B) protocol is working over HID (Vendor-Defined part of report descriptor). Could somebody help me find the description of this protocol, or tell about it.
