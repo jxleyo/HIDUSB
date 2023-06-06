@@ -1,0 +1,105 @@
+;
+; HidUsb.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=HIDClass
+ClassGuid={745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Provider    = %ProviderName%
+DriverVer=06/21/2006,10.0.14393.351
+CatalogFile=HID_USB.cat
+PnpLockdown=1
+
+
+[SourceDisksFiles]
+HID_USB.sys   = 3426
+
+[SourceDisksNames]
+3426=internets
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[Manufacturer]
+%StdMfg%=Standard,NT$ARCH$
+
+[Standard.NT$ARCH$]
+%HID_USB.DeviceDesc%=HID_USB, USB\VID_048D&PID_8911&REV_0109&MI_01;,GENERIC_HID_DEVICE,USB\Class_03&SubClass_01,USB\Class_03
+;%HID_USB.DeviceDesc%=HID_USB, USB\VID_1BCF&PID_0005&REV_0090
+
+;=====================================================================
+[HID_USB.NT]
+Copyfiles = HID_USB.CopyFiles.NT
+;AddProperty = HID_USB.AddProp.NT
+
+[HID_USB.NT.HW]
+AddReg = HID_USB.AddReg.NT.HW
+DelReg = HID_USB.DelReg.NT.HW
+
+[HID_USB.AddReg.NT.HW]
+; Defaults
+HKR,,"SelectiveSuspendEnabled",0x00000001,0;;0x1
+HKR,,"EnhancedPowerManagementEnabled",0x00010001,1
+HKR,,"AllowIdleIrpInD3",0x00010001,0x1
+HKR,,"LegacyTouchScaling",0x00010001,0
+
+HKR,,"WriteReportExSupported",0x00010001,0x1
+HKR,,"DeviceResetNotificationEnabled",0x00010001,1;;很关键设置,如果没有处理该机制的方法函数需要置0否则系统无法输入鼠标触控板事件
+;HKR,,"DoNotWaitForResetResponse",0x00010001,0;
+
+;HKR,,"SystemInputSuppressionEnabled",0x00010001,1
+;HKR,,"WakeScreenOnInputSupport",0x00010001,1
+
+; Empty section (only exists to maintain compatibility with external INF files)
+;
+[HID_USB.DelReg.NT.HW]
+; Remove the ExtPropDescSemaphore flag in case it is present from a previous install
+HKR,,"ExtPropDescSemaphore"
+
+[HID_USB.CopyFiles.NT]
+HID_USB.sys,,,0x100
+
+[HID_USB.AddProp.NT]
+;GenericDriverInstalled,,,,1
+
+[HID_USB.NT.Services]
+AddService = HID_USB,%SPSVCINST_ASSOCSERVICE%,HID_Service_Inst
+
+;*****************************************
+; Service Installation section
+;*****************************************
+
+[HID_Service_Inst]
+DisplayName    = %HID_USB.SvcDesc%
+ServiceType    = %SERVICE_KERNEL_DRIVER%
+StartType      = %SERVICE_DEMAND_START%
+ErrorControl   = %SERVICE_ERROR_IGNORE%
+ServiceBinary  = %12%\HID_USB.sys
+LoadOrderGroup = extended base
+
+;*****************************************
+; Strings section
+;*****************************************
+
+[strings]
+; localizable
+ProviderName             = "jxleyo.HRP"
+StdMfg               = "HID_USB"
+HID_USB.DeviceDesc = "HID_USB Device"
+HID_USB.SVCDESC = "HID_USB Service"
+
+; non-localizable
+SPSVCINST_TAGTOFRONT  = 0x00000001
+SPSVCINST_ASSOCSERVICE= 0x00000002
+SERVICE_KERNEL_DRIVER = 1
+SERVICE_BOOT_START    = 0
+SERVICE_SYSTEM_START  = 1
+SERVICE_AUTO_START    = 2
+SERVICE_DEMAND_START  = 3
+SERVICE_ERROR_NORMAL  = 1
+SERVICE_ERROR_IGNORE  = 0
+REG_EXPAND_SZ         = 0x00020000
+REG_DWORD             = 0x00010001
+REG_SZ                = 0x00000000
+
